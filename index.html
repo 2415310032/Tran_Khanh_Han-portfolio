@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tran Khanh Han | Portfolio</title>
   
-  <!-- FAVICON KÍNH LÚP CONAN TRÊN TAB TRÌNH DUYỆT -->
+  <!-- FAVICON KÍNH LÚP CONAN -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
   
   <!-- Tailwind CSS CDN -->
@@ -62,15 +62,57 @@
     .glow-red {
       text-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
     }
+    /* Hiệu ứng thở nhẹ cho ảnh Conan lúc đầu */
+    @keyframes pulseTarget {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.4)); }
+      50% { transform: scale(1.03); filter: drop-shadow(0 0 30px rgba(239, 68, 68, 0.8)); }
+    }
+    .pulse-conan {
+      animation: pulseTarget 3s infinite ease-in-out;
+    }
   </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen relative overflow-x-hidden">
 
-  <!-- Audio Conan Theme: ưu tiên file conan.mp3 cùng thư mục -->
-  <audio id="conanAudio" loop preload="auto">
-    <source src="conan.mp3" type="audio/mpeg">
-    <source src="https://raw.githubusercontent.com/manhhung-dev/audio-host/main/conan-theme.mp3" type="audio/mpeg">
-  </audio>
+  <!-- ================= 1. ẢNH NỀN MỜ PHÍA SAU (Đọc từ file bg.jpg của bạn) ================= -->
+  <div 
+    class="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat pointer-events-none opacity-15 filter contrast-125 brightness-90"
+    style="background-image: url('bg.jpg');"
+  ></div>
+
+  <!-- ================= 2. MÀN HÌNH INTRO: TỐI ĐEN -> CONAN XUẤT HIỆN -> BẤM ĐỂ VÀO ================= -->
+  <div id="introScreen" class="fixed inset-0 z-[100] bg-[#050a14] flex flex-col items-center justify-center p-6 transition-all duration-1000 ease-in-out">
+    <div class="max-w-md text-center flex flex-col items-center">
+      
+      <!-- Ảnh Conan đọc từ file conan.png của bạn -->
+      <div onclick="enterSite()" class="cursor-pointer relative w-48 h-48 md:w-56 md:h-56 rounded-full p-2 border-2 border-red-500/60 mb-6 pulse-conan bg-slate-950/90 overflow-hidden flex items-center justify-center">
+        <img 
+          src="conan.png" 
+          alt="Detective Conan" 
+          class="w-full h-full object-cover object-top rounded-full"
+          onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/vi/9/90/Conan_Edogawa.png';"
+        />
+        <div class="absolute inset-0 rounded-full border border-dashed border-red-500/40 animate-spin" style="animation-duration: 20s;"></div>
+      </div>
+
+      <p class="cinzel text-xs text-red-500 tracking-[0.3em] font-bold mb-2">CASE FILE #2024-TKH</p>
+      <h1 class="cinzel text-2xl md:text-3xl font-black text-white tracking-widest mb-3">
+        "THERE IS ONLY ONE TRUTH!"
+      </h1>
+      <p class="text-xs text-slate-400 italic mb-8">
+        真実はいつもひとつ — Click below to investigate & enter the dossier.
+      </p>
+
+      <!-- Nút bấm vào web & tự phát nhạc -->
+      <button onclick="enterSite()" class="px-8 py-3 rounded-full bg-gradient-to-r from-red-800 via-red-600 to-red-800 hover:from-red-700 hover:to-red-700 text-white font-bold text-xs uppercase tracking-widest shadow-xl shadow-red-950/80 border border-red-500/60 transition transform hover:scale-105">
+        👉 CLICK TO ENTER CASE FILE
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Nhạc Conan: đọc từ file conan.mp3 của bạn -->
+  <audio id="conanAudio" loop preload="auto" src="conan.mp3"></audio>
 
   <!-- ================= HEADER VỚI MENU CUỘN TRANG ================= -->
   <header class="border-b border-slate-800 bg-[#070e1b]/95 backdrop-blur sticky top-0 z-50">
@@ -113,22 +155,6 @@
       </button>
     </div>
   </section>
-	 <!-- Cột ảnh Conan mắt kính bên phải -->
-      <div class="relative w-44 h-44 md:w-56 md:h-56 flex-shrink-0">
-        <div class="conan-bracket-red w-full h-full rounded overflow-hidden bg-slate-900 border border-red-500/30 shadow-2xl shadow-red-950/50">
-          <!-- Ảnh Conan mắt kính định vị -->
-          <img 
-            src="https://images.alphacoders.com/698/698947.png" 
-            alt="Detective Conan Glasses" 
-            class="w-full h-full object-cover object-center filter contrast-125 hover:scale-105 transition duration-500"
-            onerror="this.src='https://cdn.myanimelist.net/images/characters/8/164843.jpg'"
-          />
-        </div>
-      </div>
-
-    </div>
-  </section>
-
 
   <!-- ================= MỤC: NGHIÊN CỨU & DỰ ÁN ================= -->
   <section id="projects" class="max-w-4xl mx-auto px-6 py-14">
@@ -149,7 +175,7 @@
     <div class="space-y-4">
       
       <!-- Dự án 1 -->
-      <div class="project-card conan-bracket-red bg-[#0c1626] p-5 rounded" data-category="research">
+      <div class="project-card conan-bracket-red bg-[#0c1626]/90 backdrop-blur p-5 rounded" data-category="research">
         <div class="flex justify-between items-center mb-1.5">
           <span class="text-xs font-semibold text-red-400">National Scientific Conference</span>
           <span class="text-[11px] bg-red-950 px-2 py-0.5 rounded text-red-300 font-medium">Co-Author</span>
@@ -161,7 +187,7 @@
       </div>
 
       <!-- Dự án 2 -->
-      <div class="project-card conan-bracket-red bg-[#0c1626] p-5 rounded" data-category="research">
+      <div class="project-card conan-bracket-red bg-[#0c1626]/90 backdrop-blur p-5 rounded" data-category="research">
         <div class="flex justify-between items-center mb-1.5">
           <span class="text-xs font-semibold text-amber-400">Student Scientific Research Project (NCKH)</span>
           <span class="text-[11px] bg-amber-950 px-2 py-0.5 rounded text-amber-300 font-medium">Lead Researcher</span>
@@ -173,7 +199,7 @@
       </div>
 
       <!-- Dự án 3 -->
-      <div class="project-card conan-bracket-red bg-[#0c1626] p-5 rounded" data-category="research">
+      <div class="project-card conan-bracket-red bg-[#0c1626]/90 backdrop-blur p-5 rounded" data-category="research">
         <div class="flex justify-between items-center mb-1.5">
           <span class="text-xs font-semibold text-blue-400">Working Paper</span>
           <span class="text-[11px] bg-blue-950 px-2 py-0.5 rounded text-blue-300 font-medium">2022 - 2025</span>
@@ -185,15 +211,14 @@
       </div>
 
       <!-- Dự án 4 -->
-      <div class="project-card conan-bracket-red bg-[#0c1626] p-5 rounded" data-category="activity">
+      <div class="project-card conan-bracket-red bg-[#0c1626]/90 backdrop-blur p-5 rounded" data-category="activity">
         <div class="flex justify-between items-center mb-1.5">
           <span class="text-xs font-semibold text-emerald-400">FTU Youth Leadership</span>
           <span class="text-[11px] bg-emerald-950 px-2 py-0.5 rounded text-emerald-300 font-medium">Head of Department</span>
         </div>
         <h4 class="text-sm md:text-base font-bold text-white mb-2">Leadership & Event Organization Activities</h4>
         <p class="text-xs text-slate-300 leading-relaxed">
-          Supervised academic orientation.
-	  Spearheaded the organization of a workshop attracting 2,500+ attendees and a professional talk show for 300 guests.
+          Supervised academic orientation. Spearheaded the organization of a workshop attracting 2,500+ attendees and a professional talk show for 300 guests.
         </p>
       </div>
 
@@ -205,7 +230,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       
       <!-- KỸ NĂNG -->
-      <div class="conan-bracket-red bg-[#0c1626] p-6 rounded">
+      <div class="conan-bracket-red bg-[#0c1626]/90 backdrop-blur p-6 rounded">
         <h4 class="cinzel text-lg font-bold text-white mb-4 border-b border-slate-800 pb-2 text-red-400">
           SKILLS
         </h4>
@@ -218,7 +243,7 @@
       </div>
 
       <!-- SỞ THÍCH -->
-      <div class="conan-bracket-red bg-[#0c1626] p-6 rounded">
+      <div class="conan-bracket-red bg-[#0c1626]/90 backdrop-blur p-6 rounded">
         <h4 class="cinzel text-lg font-bold text-white mb-4 border-b border-slate-800 pb-2 text-amber-400">
           INTERESTS
         </h4>
@@ -231,7 +256,7 @@
     </div>
   </section>
 
-  <!-- ================= MỤC LIÊN HỆ  ================= -->
+  <!-- ================= MỤC LIÊN HỆ ================= -->
   <section id="contact" class="max-w-4xl mx-auto px-6 py-10">
     <div class="text-center mb-8">
       <p class="cinzel text-xs md:text-sm text-slate-300 tracking-widest uppercase">
@@ -239,9 +264,9 @@
       </p>
     </div>
 
-    <div class="gold-box-bracket bg-[#091322] p-8 md:p-12 rounded">
+    <div class="gold-box-bracket bg-[#091322]/95 backdrop-blur p-8 md:p-12 rounded">
       
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 text-center max-w-2xl mx-auto">
         
         <!-- Ô Email -->
         <div class="bg-[#0e1c31] border border-amber-500/20 p-5 rounded flex flex-col justify-between">
@@ -253,7 +278,6 @@
             Copy Email Address
           </button>
         </div>
-
 
         <!-- Ô Địa điểm -->
         <div class="bg-[#0e1c31] border border-amber-500/20 p-5 rounded flex flex-col justify-between">
@@ -278,19 +302,8 @@
       </div>
 
     </div>
-	<!-- KHU VỰC VERMOUTH: ẢNH + CÂU QUOTE -->
-    <div class="text-center mt-12 mb-6 flex flex-col items-center">
-      
-      <!-- Avatar Vermouth tròn với viền vàng lấp lánh -->
-      <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-amber-500/60 shadow-lg shadow-amber-950/50 mb-3 hover:scale-110 transition duration-300">
-        <img 
-          src="https://cdn.myanimelist.net/images/characters/16/30043.jpg" 
-          alt="Vermouth" 
-          class="w-full h-full object-cover object-top"
-        />
-      </div>
 
-    <!--VERMOUTH -->
+    <!-- VERMOUTH -->
     <div class="text-center mt-12 mb-6">
       <p class="cinzel italic text-amber-300/90 text-sm md:text-base tracking-wider mb-2">
         "A secret makes a woman woman."
@@ -304,14 +317,29 @@
     </div>
   </section>
 
+  <!-- ================= JAVASCRIPT ================= -->
   <script>
     const audio = document.getElementById("conanAudio");
     const audioState = document.getElementById("audioState");
     const mainQuote = document.getElementById("mainQuote");
     const btnText = document.getElementById("btnText");
     const playIcon = document.getElementById("playIcon");
+    const introScreen = document.getElementById("introScreen");
 
-    // 1. Bật/tắt nhạc Conan
+    // 1. Khi bấm vào màn hình mở đầu để vào web
+    function enterSite() {
+      introScreen.classList.add("opacity-0", "pointer-events-none");
+      
+      audio.play().then(() => {
+        audioState.innerText = "ON";
+        audioState.className = "font-bold text-red-400";
+        btnText.innerText = "Pause Conan Theme";
+        playIcon.innerText = "⏸";
+        mainQuote.classList.add("glow-red", "text-red-500");
+      }).catch(() => {});
+    }
+
+    // 2. Bật/tắt nhạc Conan thủ công
     function toggleAudio() {
       if (audio.paused) {
         audio.play().then(() => {
@@ -331,7 +359,7 @@
       }
     }
 
-    // 2. Lọc Nghiên cứu & Hoạt động
+    // 3. Lọc Nghiên cứu & Hoạt động
     function filterProjects(category) {
       const cards = document.querySelectorAll(".project-card");
       const buttons = document.querySelectorAll(".filter-btn");
@@ -351,7 +379,7 @@
       });
     }
 
-    // 3. Sao chép Email
+    // 4. Sao chép Email
     function copyEmail() {
       const email = document.getElementById("emailText").innerText;
       navigator.clipboard.writeText(email);
